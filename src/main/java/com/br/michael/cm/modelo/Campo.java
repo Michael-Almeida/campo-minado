@@ -1,5 +1,7 @@
 package com.br.michael.cm.modelo;
 
+import com.br.michael.cm.excessao.ExplosaoException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +39,47 @@ public class Campo {
         } else {
             return false;
         }
+    }
+
+    void alterarMarcacao() {
+        if (!aberto) {
+            marcado = !marcado;
+        }
+    }
+
+    boolean abrir() {
+        if (!aberto && !marcado) {
+            aberto = true;
+
+            if (minado) {
+                throw new ExplosaoException();
+            }
+            if (vizinhancaSegura()) {
+                vizinhos.forEach(v -> v.abrir());
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean vizinhancaSegura() {
+        return vizinhos.stream().noneMatch(v -> v.minado);
+    }
+
+    void minar() {
+        minado = true;
+    }
+
+    public boolean isMarcado() {
+        return marcado;
+    }
+
+    public boolean isAberto() {
+        return aberto;
+    }
+
+    public boolean isFechado(){
+        return !isAberto();
     }
 }
