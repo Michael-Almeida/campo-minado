@@ -136,4 +136,82 @@ class CampoTest {
 
         assertTrue(campo22.isAberto() && campo11.isFechado());
     }
+
+
+    @Test
+    void testeAcessoLinhaVizinho() {
+        assertEquals(3, campo.getLinha());
+    }
+
+    @Test
+    void testeAcessoColunaVizinho() {
+        assertEquals(3, campo.getColuna());
+    }
+
+    @Test
+    void testeObjetivoAlcancadoCampoMarcadoEMinado() {
+        campo.minar();
+        campo.alterarMarcacao();
+        assertTrue(campo.objetivoAlcancado(), "Campo minado e marcado");
+    }
+
+    @Test
+    void testeObjetivoNaoAlcancado() {
+        assertFalse(campo.objetivoAlcancado(), "Campos não abertos, sem marcação e sem mina");
+    }
+
+    @Test
+    void testeQuantidadeMinasNaVizinhanca() {
+        Campo vizinho1 = new Campo(3, 2);
+        Campo vizinho2 = new Campo(2, 3);
+
+        vizinho1.minar();
+        vizinho2.minar();
+
+        campo.adicionaVizinho(vizinho1);
+        campo.adicionaVizinho(vizinho2);
+
+        assertEquals(2, campo.minasVizinhanca(), "Deve haver duas minas na vizinhança");
+    }
+
+    @Test
+    void testandoReinicioDoJogo() {
+        campo.abrir();
+        campo.minar();
+        campo.alterarMarcacao();
+
+        campo.reiniciar();
+
+        assertFalse(campo.isAberto(), "Campo deve estar fechado após reiniciar");
+        assertFalse(campo.isMarcado(), "Campo deve estar desmarcado após reiniciar");
+
+    }
+
+    @Test
+    void testeToStringFechado() {
+        assertEquals("?",campo.toString(),"Campo deve exibir ?");
+    }
+
+    @Test
+    void testeToStringCampoMarcado(){
+        campo.alterarMarcacao();
+        assertEquals("X",campo.toString(),"Campo marcado com um X" );
+    }
+
+    @Test
+    void testeToStringCampoAbertoMinado(){
+        campo.minar();
+
+        assertThrows(ExplosaoException.class, () -> {
+            campo.abrir();
+        });
+    }
+
+    @Test
+    void testeToStringAbertoSemMinaNaVizinhanca(){
+        campo.abrir();
+        assertEquals(" ",campo.toString(),"Campo aberto sem minas, deve ser em branco");
+    }
+
+
 }
