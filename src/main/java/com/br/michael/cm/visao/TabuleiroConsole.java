@@ -46,11 +46,10 @@ public class TabuleiroConsole {
                 String digitado = capturarValorDigitado("Digite (x, y): ");
                 Iterator<Integer> xy = Arrays.stream(digitado.split(",")).map(e -> Integer.parseInt(e.trim())).iterator();
 
-                System.out.println(xy.next());
-                System.out.println(xy.next());
 
-                digitado = capturarValorDigitado("1 - Abrir ou 2 - (Des)marcar");
+                digitado = capturarValorDigitado("1 - Abrir ou 2 - (Des)marcar: ");
 
+                System.out.println(digitado);
                 if ("1".equals(digitado)) {
                     tabuleiro.abrir(xy.next(), xy.next());
                 } else if ("2".equals(digitado)) {
